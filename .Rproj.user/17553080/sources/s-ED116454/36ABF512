@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588371325568.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "358953779",
+    "id" : "36ABF512",
+    "lastKnownWriteTime" : 1581374968,
+    "last_content_update" : 1581374968,
+    "path" : "C:/Users/iamrk/Downloads/Lecture 4 R.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

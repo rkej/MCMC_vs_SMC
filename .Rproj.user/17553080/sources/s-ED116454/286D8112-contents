@@ -1,0 +1,130 @@
+
+#### Monte Carlo Basic
+
+## Example 1: Moments of a random variable
+## Let X1,...,Xn come from N(0,1)
+## Fine E(X), E(X^2), E(X^3), etc...
+
+n = 10000
+x = rnorm(n, 0, 2)
+sum(x)/n
+sum(x^2)/n
+sum(x^3)/n
+sum(x^4)/n
+sum(x^60)/n ## We are increasingly innacurate as the exponent increases
+
+## Find the Monte Carlo standard error
+sqrt(sum((x - mean(x))^2)/(n-1))/sqrt(n) ## Or just sd(x)/n
+sd(x)/sqrt(n)
+sqrt(sum((x^2 - mean(x^2))^2)/(n-1))/sqrt(n)
+sd(x^2)/sqrt(n)
+sd(x^3)/sqrt(n)
+sd(x^4)/sqrt(n)
+sd(x^60)/sqrt(n)
+
+
+
+mc.vec = rep(NA, 1000)
+for(i in 1:1000){
+  mc.vec[i] = mean(rnorm(n, 0, 2)^3)
+}
+
+hist(mc.vec)
+
+
+## Example 2: P (Y < X^2)
+## Let Y ~ Gamma(2, 3)
+## Let X ~ Norm(-1, 2)
+
+n = 10000
+y = rgamma(n, shape = 2, scale = 3)
+x = rnorm(n, -1, 2)
+
+sum(y < (x^2))/n
+
+
+
+
+
+
+
+
+# Now look at Monte Carlo Integration -------------------------------------
+
+n<-1000
+U<-runif(n)
+
+X<-exp(-U)
+MC_int <- mean(X)
+MC_int
+MC_sd<-sd(X)
+MC_sd
+c(MC_int-2*MC_sd/sqrt(n),MC_int + 2*MC_sd/sqrt(n))
+t.test(X)
+
+
+
+my_mc<-function(n){
+  U<-runif(n)
+  X<-exp(-U)
+  MC_int <- mean(X)
+  MC_sd <- sd(X)/sqrt(n)
+  return(c(est=MC_int,est_sd=MC_sd))
+}
+my_mc(100)
+my_mc(1000)
+my_mc(10000)
+my_mc(100000)
+
+
+
+my_mc_ab<-function(n,a,b){
+  U<-runif(n,min=a,max=b)
+  X<-(b-a)*exp(-U)
+  MC_int <- mean(X)
+  MC_sd <- sd(X)/sqrt(n)
+  return(c(est=MC_int,est_sd=MC_sd))
+}
+exact_calc<-function(a,b){
+  exp(-a)-exp(-b)
+}
+
+my_mc_ab(10000,2,4)
+exact_calc(2,4)
+
+my_mc_ab(10000,29,40)
+exact_calc(29,40)
+
+
+
+
+
+
+
+# Now do more complicated integration -------------------------------------
+
+m=20
+x_all<-seq(-3,3,length=m)
+
+n<-1000
+Y<-runif(n)
+CDF_grid<-numeric(0)
+for(x in x_all){
+  temp<-0
+  xabs<-abs(x)
+  if(x < 0){
+    temp<-0.5-mean(xabs*exp(-xabs^2*Y^2/2)/sqrt(2*pi))
+  }else{
+    temp<-0.5+mean(xabs*exp(-xabs^2*Y^2/2)/sqrt(2*pi))
+  }
+  CDF_grid<-c(CDF_grid,temp)
+}
+plot(x_all,CDF_grid)
+curve(pnorm(x),from=-3,to=3,add=TRUE)
+
+
+
+
+
+
+
